@@ -3,11 +3,14 @@
 import unittest
 import strformat
 
-const MEM_SIZE* = 1048 * 16
-## MEM_SIZE is the total memory allocated for the ram of the cpu
 
-const NUM_REG* = 32
-## NUM_REG is the total number of general purpose registers for the cpu
+const MEM_SIZE* = 1048 * 16 ## MEM_SIZE is the total memory
+                            ## allocated for the ram of the cpu (16k currently)
+
+
+const NUM_REG* = 32 ## NUM_REG is the total number of general
+                    ## purpose registers for the cpu
+
 
 type INX* = enum
   ## INX is the instruction opcode
@@ -26,16 +29,11 @@ type INX* = enum
 type CPU* = object
   ## CPU - the central processing uint, 32 general purpose regs,
   ## indx register, program counter, zc
-  reg: array[0..NUM_REG, uint32]
-  ## 32 general purpose registers
-  indx: uint32
-  ## index register
-  pc: uint32
-  ## program counter
-  mem: array[0..MEM_SIZE, uint32]
-  ## memory
-  ccr: uint32
-  ## code conditon register
+  reg: array[0..NUM_REG, uint32] ## 32 general purpose registers
+  indx: uint32 ## index register
+  pc: uint32 ## program counter
+  mem: array[0..MEM_SIZE, uint32] ## memory
+  ccr: uint32 ## code conditon register
 
 proc newCPU*(): CPU =
   ## newCPU returns a fully initalized (zero'd) cpu
@@ -57,7 +55,7 @@ proc newCPU*(): CPU =
 # Instructions
 
 proc nop*(cpu: var CPU) =
-  ## nop is a `no operation`
+  ## `nop` is a `no operation`
   # just for some deubgging
   # when isMainModule:
   #   echo "NOP"
@@ -65,33 +63,33 @@ proc nop*(cpu: var CPU) =
 
 
 proc ldr_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
-  ## ldr_imm loads the register source with the 32 bit immediate value
+  ## `ldr_imm` loads the register source with the 32 bit immediate value
   cpu.reg[reg_src] = imm_val
 
 proc ldr_mem*(cpu: var CPU, reg_src, mem_addr: uint32) =
-  ## ldr_mem loads the register source with a 32 bit value from memory
+  ## `ldr_mem` loads the register source with a 32 bit value from memory
   cpu.reg[reg_src] = cpu.mem[mem_addr]
   # TODO could do a check before this to make sure mem_addr can work
   # for now we will assume its always correct
 
 
 proc add_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
-  ## add_reg adds the register destination and source together and
+  ## `add_reg` adds the register destination and source together and
   ## places the result in the register source
   cpu.reg[reg_src] += cpu.reg[reg_dest]
 
 proc add_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
-  ## add_imm adds an immediate 32 bit value to the cpu register (reg_src)
+  ## `add_imm` adds an immediate 32 bit value to the cpu register (reg_src)
   cpu.reg[reg_src] += imm_val
 
 
 proc sub_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
-  ## sub_reg subtracts the register destination from the source
+  ## `sub_reg` subtracts the register destination from the source
   ## and stores the result in the register source
   cpu.reg[reg_src] -= cpu.reg[reg_dest]
 
 proc sub_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
-  ## sub_imm subtracts immediate value from the register source
+  ## `sub_imm` subtracts immediate value from the register source
   cpu.reg[reg_src] -= imm_val
 
 
@@ -126,13 +124,13 @@ proc main() =
 
 
 
-## Just for running this file/main
+# Just for running this file/main
 when isMainModule:
   main()
 
 
 
-## Testing
+# Testing
 suite "vmtest":
   echo "Starting VM tests..."
 
