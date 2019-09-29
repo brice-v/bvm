@@ -14,7 +14,9 @@ type INX = enum
   ADD_R,
   ADD_I
 
-
+#
+# CPU object and newCPU function
+#
 type CPU* = object
   ## CPU - the central processing uint, 32 general purpose regs,
   ## indx register, program counter, zc
@@ -29,7 +31,7 @@ type CPU* = object
   ccr: uint32
   ## code conditon register
 
-proc newCPU*(): CPU =
+func newCPU*(): CPU =
   ## newCPU returns a fully initalized (zero'd) cpu
   var x = CPU()
 
@@ -47,33 +49,39 @@ proc newCPU*(): CPU =
 
 
 
-
-
-proc nop*(cpu: var CPU) =
+func nop*(cpu: var CPU) =
   ## nop is a `no operation`
   # just for some deubgging
-  when isMainModule:
-    echo "NOP"
-  cpu.pc += 1
+#   when isMainModule:
+#     debug("NOP")
+  return
 
-proc add_reg*(cpu: var CPU, reg_src: uint32, reg_dest: uint32) =
+func add_reg*(cpu: var CPU, reg_src: uint32, reg_dest: uint32) =
   ## add_reg adds the register destination and source together and
   ## places the result in the register source
   cpu.reg[reg_src] += cpu.reg[reg_dest]
 
 
-proc add_imm*(cpu: var CPU, reg_src: uint32, imm_val: uint32) =
+func add_imm*(cpu: var CPU, reg_src: uint32, imm_val: uint32) =
   ## add_imm adds an immediate 32 bit value to the cpu register (reg_src)
   cpu.reg[reg_src] += imm_val
 
-proc exec_inx(cpu: var CPU, inx: INX) =
+func exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
+  ## TODO docs
   case inx
   of NOP:
     cpu.nop()
-  else:
-    echo "Case not handled. inx: ", inx
+  of ADD_I:
+    cpu.add_imm(rs, imm_val)
+  of ADD_R:
+    cpu.add_reg(rs, rd)
+#   else:
+#     echo "Case not handled. inx: ", inx
+  # always increment the program counter
+  cpu.pc += 1
 
-when isMainModule:
+
+proc main() =
   echo "[bvm] - IN MAIN"
   var bvm = newCPU()
   echo "[bvm] Iniatialized new CPU..."
@@ -81,6 +89,16 @@ when isMainModule:
   bvm.exec_inx(NOP)
 
 
+##
+## Just for running this file/main
+##
+when isMainModule:
+  main()
+
+
+##
+## Testing
+##
 suite "vmtest":
   echo "Starting VM tests..."
 
@@ -103,5 +121,14 @@ suite "vmtest":
     testvm.reg[0] = 1
     testvm.add_imm(0, 1234)
     check(testvm.reg[0] == 1235)
+
+  test "make sure program counter increments":
+    testvm.exec_inx(NOP)
+    check(testvm.pc == 1)
+    testvm.exec_inx(NOP)
+    testvm.exec_inx(NOP)
+    testvm.exec_inx(NOP)
+    testvm.exec_inx(ADD_I, 0, 0, 1)
+    check(testvm.pc == 5)
 
   echo "Finished VM tests..."
