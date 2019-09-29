@@ -3,20 +3,26 @@
 import unittest
 import strformat
 
-const MEM_SIZE* = 1048
+const MEM_SIZE* = 1048 * 16
 ## MEM_SIZE is the total memory allocated for the ram of the cpu
 
 const NUM_REG* = 32
 ## NUM_REG is the total number of general purpose registers for the cpu
 
-type INX = enum
+type INX* = enum
+  ## INX is the instruction opcode
+  ## for now this opcode will be decided by an enum
   NOP,
   ADD_R,
-  ADD_I
+  ADD_I,
+  SUB_R,
+  SUB_I,
+  LDR_I,
+  LDR_M
 
-#
+
+
 # CPU object and newCPU function
-#
 type CPU* = object
   ## CPU - the central processing uint, 32 general purpose regs,
   ## indx register, program counter, zc
@@ -48,12 +54,13 @@ proc newCPU*(): CPU =
   return x
 
 
+# Instructions
 
 proc nop*(cpu: var CPU) =
   ## nop is a `no operation`
   # just for some deubgging
-  when isMainModule:
-    echo "NOP"
+  # when isMainModule:
+  #   echo "NOP"
   return
 
 
@@ -67,24 +74,28 @@ proc ldr_mem*(cpu: var CPU, reg_src, mem_addr: uint32) =
   # TODO could do a check before this to make sure mem_addr can work
   # for now we will assume its always correct
 
+
 proc add_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
   ## add_reg adds the register destination and source together and
   ## places the result in the register source
   cpu.reg[reg_src] += cpu.reg[reg_dest]
 
-
 proc add_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
   ## add_imm adds an immediate 32 bit value to the cpu register (reg_src)
   cpu.reg[reg_src] += imm_val
 
+
 proc sub_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
-  ## sub_reg subtracts the register source from the register destination
-  ## and stores in the register source
-  cpu.reg[reg_src] = cpu.reg[reg_dest] - cpu.reg[reg_src]
+  ## sub_reg subtracts the register destination from the source
+  ## and stores the result in the register source
+  cpu.reg[reg_src] -= cpu.reg[reg_dest]
 
 proc sub_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
   ## sub_imm subtracts immediate value from the register source
   cpu.reg[reg_src] -= imm_val
+
+
+# Stuff related to running a program
 
 proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
   ## TODO docs
@@ -95,12 +106,17 @@ proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
     cpu.add_imm(rs, imm_val)
   of ADD_R:
     cpu.add_reg(rs, rd)
-#   else:
-#     echo "Case not handled. inx: ", inx
+  else:
+    echo "Case not handled. inx: ", inx
+
   # always increment the program counter
+  # eventually maybe we will simulate different
+  # instructions have different number of cycles
   cpu.pc += 1
 
 
+
+# main to run anything else
 proc main() =
   echo "[bvm] - IN MAIN"
   var bvm = newCPU()
@@ -109,46 +125,64 @@ proc main() =
   bvm.exec_inx(NOP)
 
 
-##
+
 ## Just for running this file/main
-##
 when isMainModule:
   main()
 
 
-##
+
 ## Testing
-##
 suite "vmtest":
   echo "Starting VM tests..."
 
   setup:
-    var testvm = newCPU()
+    var vm = newCPU()
 
   test "test reg is equal to zero":
     # print a nasty message and move on, skipping
     # the remainder of this block
-    check(testvm.reg[0] != 1)
-    check(testvm.reg[0] == 0)
+    check(vm.reg[0] != 1)
+    check(vm.reg[0] == 0)
 
   test "add_reg":
-    testvm.reg[0] = 1
-    testvm.reg[1] = 2
-    testvm.add_reg(0, 1)
-    check(testvm.reg[0] == 3)
+    vm.reg[0] = 1
+    vm.reg[1] = 2
+    vm.add_reg(0, 1)
+    check(vm.reg[0] == 3)
 
   test "add_imm":
-    testvm.reg[0] = 1
-    testvm.add_imm(0, 1234)
-    check(testvm.reg[0] == 1235)
+    vm.reg[0] = 1
+    vm.add_imm(0, 1234)
+    check(vm.reg[0] == 1235)
+
+  test "sub_reg":
+    vm.reg[0] = 3
+    vm.reg[1] = 1
+    vm.sub_reg(0, 1)
+    check(vm.reg[0] == 2)
+
+  test "sub_imm":
+    vm.reg[0] = 3
+    vm.sub_imm(0, 1)
+    check(vm.reg[0] == 2)
+
+  test "ldr_imm":
+    vm.ldr_imm(0, 1234)
+    check(vm.reg[0] == 1234)
+
+  test "ldr_mem":
+    vm.mem[1234] = 4321
+    vm.ldr_mem(0, 1234)
+    check(vm.reg[0] == 4321)
 
   test "make sure program counter increments":
-    testvm.exec_inx(NOP)
-    check(testvm.pc == 1)
-    testvm.exec_inx(NOP)
-    testvm.exec_inx(NOP)
-    testvm.exec_inx(NOP)
-    testvm.exec_inx(ADD_I, 0, 0, 1)
-    check(testvm.pc == 5)
+    vm.exec_inx(NOP)
+    check(vm.pc == 1)
+    vm.exec_inx(NOP)
+    vm.exec_inx(NOP)
+    vm.exec_inx(NOP)
+    vm.exec_inx(ADD_I, 0, 0, 1)
+    check(vm.pc == 5)
 
   echo "Finished VM tests..."
