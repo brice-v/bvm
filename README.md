@@ -2,7 +2,7 @@
 virtual machine/cpu/iss in nim
 
 ### dependencies
-nim
+`nim`
 
 #### to run
-nim c -r bvm.nim
+`nim c -r bvm.nim`
