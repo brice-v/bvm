@@ -31,7 +31,7 @@ type CPU* = object
   ccr: uint32
   ## code conditon register
 
-func newCPU*(): CPU =
+proc newCPU*(): CPU =
   ## newCPU returns a fully initalized (zero'd) cpu
   var x = CPU()
 
@@ -49,24 +49,44 @@ func newCPU*(): CPU =
 
 
 
-func nop*(cpu: var CPU) =
+proc nop*(cpu: var CPU) =
   ## nop is a `no operation`
   # just for some deubgging
-#   when isMainModule:
-#     debug("NOP")
+  when isMainModule:
+    echo "NOP"
   return
 
-func add_reg*(cpu: var CPU, reg_src: uint32, reg_dest: uint32) =
+
+proc ldr_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
+  ## ldr_imm loads the register source with the 32 bit immediate value
+  cpu.reg[reg_src] = imm_val
+
+proc ldr_mem*(cpu: var CPU, reg_src, mem_addr: uint32) =
+  ## ldr_mem loads the register source with a 32 bit value from memory
+  cpu.reg[reg_src] = cpu.mem[mem_addr]
+  # TODO could do a check before this to make sure mem_addr can work
+  # for now we will assume its always correct
+
+proc add_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
   ## add_reg adds the register destination and source together and
   ## places the result in the register source
   cpu.reg[reg_src] += cpu.reg[reg_dest]
 
 
-func add_imm*(cpu: var CPU, reg_src: uint32, imm_val: uint32) =
+proc add_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
   ## add_imm adds an immediate 32 bit value to the cpu register (reg_src)
   cpu.reg[reg_src] += imm_val
 
-func exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
+proc sub_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
+  ## sub_reg subtracts the register source from the register destination
+  ## and stores in the register source
+  cpu.reg[reg_src] = cpu.reg[reg_dest] - cpu.reg[reg_src]
+
+proc sub_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
+  ## sub_imm subtracts immediate value from the register source
+  cpu.reg[reg_src] -= imm_val
+
+proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
   ## TODO docs
   case inx
   of NOP:
