@@ -1,12 +1,18 @@
 ## This is an attempt to make a cpu/iss simulator in nim
 
 import unittest
+import strformat
 
 const MEM_SIZE* = 1048
 ## MEM_SIZE is the total memory allocated for the ram of the cpu
 
 const NUM_REG* = 32
 ## NUM_REG is the total number of general purpose registers for the cpu
+
+type INX = enum
+  NOP,
+  ADD_R,
+  ADD_I
 
 
 type CPU* = object
@@ -40,18 +46,39 @@ proc newCPU*(): CPU =
   return x
 
 
+
+
+
+proc nop*(cpu: var CPU) =
+  ## nop is a `no operation`
+  # just for some deubgging
+  when isMainModule:
+    echo "NOP"
+  cpu.pc += 1
+
 proc add_reg*(cpu: var CPU, reg_src: uint32, reg_dest: uint32) =
   ## add_reg adds the register destination and source together and
   ## places the result in the register source
   cpu.reg[reg_src] += cpu.reg[reg_dest]
 
+
 proc add_imm*(cpu: var CPU, reg_src: uint32, imm_val: uint32) =
   ## add_imm adds an immediate 32 bit value to the cpu register (reg_src)
   cpu.reg[reg_src] += imm_val
 
-# var bvm = newCPU()
-# echo bvm.mem
+proc exec_inx(cpu: var CPU, inx: INX) =
+  case inx
+  of NOP:
+    cpu.nop()
+  else:
+    echo "Case not handled. inx: ", inx
 
+when isMainModule:
+  echo "[bvm] - IN MAIN"
+  var bvm = newCPU()
+  echo "[bvm] Iniatialized new CPU..."
+  echo "[bvm] mem: ", fmt"[{MEM_SIZE}: uint32]"
+  bvm.exec_inx(NOP)
 
 
 suite "vmtest":
@@ -59,10 +86,6 @@ suite "vmtest":
 
   setup:
     var testvm = newCPU()
-
-#   teardown:
-#     testvm = newCPU()
-
 
   test "test reg is equal to zero":
     # print a nasty message and move on, skipping
