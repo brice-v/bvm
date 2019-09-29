@@ -30,7 +30,6 @@ type CPU* = object
   ## CPU - the central processing uint, 32 general purpose regs,
   ## indx register, program counter, zc
   reg: array[0..NUM_REG, uint32] ## 32 general purpose registers
-  indx: uint32 ## index register
   pc: uint32 ## program counter
   mem: array[0..MEM_SIZE, uint32] ## memory
   ccr: uint32 ## code conditon register
@@ -45,7 +44,6 @@ proc newCPU*(): CPU =
   for i in 0..MEM_SIZE:
     x.mem[i] = 0
 
-  x.indx = 0
   x.pc = 0
   x.ccr = 0
 
