@@ -72,6 +72,18 @@ proc ldr_mem*(cpu: var CPU, reg_src, mem_addr: uint32) =
   # TODO could do a check before this to make sure mem_addr can work
   # for now we will assume its always correct
 
+proc str_imm*(cpu: var CPU, mem_addr, imm_val: uint32) =
+  ## `str_imm` takes the 32 bit immediate value and places it at the
+  ## memory address
+  cpu.mem[mem_addr] = imm_val
+
+proc str_reg*(cpu: var CPU, mem_addr, reg_src: uint32) =
+  ## `str_reg` takes the 32 bit value located at reg_src and places
+  ## it at the memory address location
+  cpu.mem[mem_addr] = cpu.reg[reg_src]
+
+
+
 
 proc add_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
   ## `add_reg` adds the register destination and source together and
@@ -92,6 +104,53 @@ proc sub_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
   ## `sub_imm` subtracts immediate value from the register source
   cpu.reg[reg_src] -= imm_val
 
+
+proc inv_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `inv_reg` performs a bitwise NOT on the `reg_src`
+  cpu.reg[reg_src] = not cpu.reg[reg_src]
+
+proc and_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
+  ## `and_reg` performs a bitwise AND between the register source
+  ## and the register destination.  the result is stored in the
+  ## register source
+  cpu.reg[reg_src] = cpu.reg[reg_src] and cpu.reg[reg_dest]
+
+proc and_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
+  ## `and_imm` performs a bitwise AND between the register source
+  ## and the 32 bit immediate value.  the result is stored in the
+  ## register source
+  cpu.reg[reg_src] = cpu.reg[reg_src] and imm_val
+
+proc or_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
+  ## `or_reg` performs a bitwise OR between the register source
+  ## and the register destination.  the result is stored in the
+  ## register source
+  cpu.reg[reg_src] = cpu.reg[reg_src] or cpu.reg[reg_dest]
+
+proc or_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
+  ## `or_imm` performs a bitwise OR between the register source
+  ## and the register destination.  the result is stored in the
+  ## register source
+  cpu.reg[reg_src] = cpu.reg[reg_src] or imm_val
+
+
+proc xor_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
+  ## `xor_reg` performs a bitwise XOR between the register source
+  ## and the register destination.  the result is stored in the
+  ## register source
+  cpu.reg[reg_src] = cpu.reg[reg_src] xor cpu.reg[reg_dest]
+
+proc xor_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
+  ## `xor_imm` performs a bitwise XOR between the register source
+  ## and the register destination.  the result is stored in the
+  ## register source
+  cpu.reg[reg_src] = cpu.reg[reg_src] xor imm_val
+
+
+# TODO Rename all of reg_src and reg_dest to r1, r2 or something
+# like that
+# TODO Determine if we need some sort of direct memory addressing
+# mode - currently just can load and store
 
 # Stuff related to running a program
 
