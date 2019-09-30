@@ -4,7 +4,7 @@ import unittest
 import strformat
 
 
-const MEM_SIZE* = 1048 * 16 ## MEM_SIZE is the total memory
+const MEM_SIZE* = 1024 * 16 ## MEM_SIZE is the total memory
                             ## allocated for the ram of the cpu (16k currently)
 
 
