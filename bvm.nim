@@ -23,7 +23,11 @@ type INX* = enum
   LDR_I,
   LDR_M
 
-
+type CCR* = object
+  ## CCR - the code condition register, made up of flags
+  zf: bool  ## zero flag
+  ltf: bool ## less than flag
+  nf: bool  ## negative flag
 
 # CPU object and newCPU function
 type CPU* = object
@@ -32,7 +36,7 @@ type CPU* = object
   reg: array[0..NUM_REG, uint32] ## 32 general purpose registers
   pc: uint32 ## program counter
   mem: array[0..MEM_SIZE, uint32] ## memory
-  ccr: uint32 ## code conditon register
+  ccr: CCR
 
 proc newCPU*(): CPU =
   ## newCPU returns a fully initalized (zero'd) cpu
@@ -45,7 +49,9 @@ proc newCPU*(): CPU =
     x.mem[i] = 0
 
   x.pc = 0
-  x.ccr = 0
+  x.ccr.zf = false # flags would normally be satisfied by a 1 bit value
+  x.ccr.ltf = false # when theyre all together it would be like 1 32 bit reg
+  x.ccr.nf = false
 
   return x
 
@@ -150,6 +156,39 @@ proc xor_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
 # TODO Determine if we need some sort of direct memory addressing
 # mode - currently just can load and store
 
+proc test_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
+  ## `test_reg` will set the flags in the code condition register
+  ## according to the result of a subtraction between the destination
+  ## register and the source register (rs - rd)
+  ##
+  ## zero flag is set when they are equal
+  ##
+  ## less than flag is set when the destination register is less
+  ## than the source register
+  ##
+  ## negative flag is set when there is a bit in the sign field as
+  ## the result of source register - destination register
+  ## (use a reg with zero as the dest to just check 1 register)
+  cpu.ccr.ltf = if cpu.reg[reg_src] > cpu.reg[reg_dest]: true else: false
+
+  let tmp_result = cpu.reg[reg_src] - cpu.reg[reg_dest]
+  let sign_bit = 2_147_483_642'u32 # this is just a 1 in the 32nd position
+  cpu.ccr.nf = if tmp_result >= sign_bit: true else: false
+
+  cpu.ccr.zf = if tmp_result == 0: true else: false
+
+
+proc jmp_reg*(cpu: var CPU, reg_src: uint32) =
+  cpu.pc = cpu.reg[reg_src]
+
+proc jmp_imm*(cpu: var CPU, imm_val: uint32) =
+  cpu.pc = imm_val
+
+proc jeq_reg*(cpu: var CPU, reg_src: uint32) =
+  if cpu.ccr.zf: cpu.pc = cpu.reg[reg_src]
+
+proc jeq_imm*(cpu: var CPU, imm_val: uint32) =
+  if cpu.ccr.zf: cpu.pc = imm_val
 # Stuff related to running a program
 
 proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
