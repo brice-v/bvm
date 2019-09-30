@@ -65,6 +65,9 @@ proc nop*(cpu: var CPU) =
   #   echo "NOP"
   return
 
+#[
+  Getting data into the registers/memory
+]#
 
 proc ldr_imm*(cpu: var CPU, reg_src, imm_val: uint32) =
   ## `ldr_imm` loads the register source with the 32 bit immediate value
@@ -87,7 +90,9 @@ proc str_reg*(cpu: var CPU, mem_addr, reg_src: uint32) =
   cpu.mem[mem_addr] = cpu.reg[reg_src]
 
 
-
+#[
+  Basic instructions between registers and immediate values
+]#
 
 proc add_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
   ## `add_reg` adds the register destination and source together and
@@ -178,6 +183,10 @@ proc test_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
   cpu.ccr.zf = if tmp_result == 0: true else: false
 
 
+#[
+  CONDITIONAL JUMPS
+]#
+
 proc jmp_reg*(cpu: var CPU, reg_src: uint32) =
   cpu.pc = cpu.reg[reg_src]
 
@@ -226,6 +235,11 @@ proc jgte_imm*(cpu: var CPU, imm_val: uint32) =
 
 # Stuff related to running a program
 
+#[
+  VM related code, will still need an assembler to work
+  well with this
+]#
+
 proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
   ## TODO docs
   case inx
@@ -243,22 +257,32 @@ proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
   # instructions have different number of cycles
   cpu.pc += 1
 
-
+#[
+  Main program mostly for debugging, could turn this
+  into a more fun program, maybe a repl
+]#
 
 # main to run anything else
 proc main() =
   echo "[bvm] - IN MAIN"
   var bvm = newCPU()
   echo "[bvm] Iniatialized new CPU..."
-  echo "[bvm] mem: ", fmt"[{MEM_SIZE}: uint32]"
+  echo "[bvm] mem: ", fmt"[{MEM_SIZE}: uint32] | {int((MEM_SIZE * 32)/1024)}K bytes"
   bvm.exec_inx(NOP)
-
-
 
 # Just for running this file/main
 when isMainModule:
   main()
 
+
+#[
+  Just for Testing
+  
+  In here all the instructions should be tested.
+  
+  The VM related instructions and test should probably
+  end up going in a file with them.
+]#
 
 
 # Testing
