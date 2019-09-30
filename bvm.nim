@@ -185,10 +185,45 @@ proc jmp_imm*(cpu: var CPU, imm_val: uint32) =
   cpu.pc = imm_val
 
 proc jeq_reg*(cpu: var CPU, reg_src: uint32) =
-  if cpu.ccr.zf: cpu.pc = cpu.reg[reg_src]
+  if cpu.ccr.zf == true: cpu.pc = cpu.reg[reg_src]
 
 proc jeq_imm*(cpu: var CPU, imm_val: uint32) =
-  if cpu.ccr.zf: cpu.pc = imm_val
+  if cpu.ccr.zf == true: cpu.pc = imm_val
+
+proc jne_reg*(cpu: var CPU, reg_src: uint32) =
+  if cpu.ccr.zf == false: cpu.pc = cpu.reg[reg_src]
+
+proc jne_imm*(cpu: var CPU, imm_val: uint32) =
+  if cpu.ccr.zf == false: cpu.pc = imm_val
+
+proc jlt_reg*(cpu: var CPU, reg_src: uint32) =
+  if cpu.ccr.ltf == true: cpu.pc = cpu.reg[reg_src]
+
+proc jlt_imm*(cpu: var CPU, imm_val: uint32) =
+  if cpu.ccr.ltf == true: cpu.pc = imm_val
+
+proc jgt_reg*(cpu: var CPU, reg_src: uint32) =
+  if cpu.ccr.ltf == false: cpu.pc = cpu.reg[reg_src]
+
+proc jgt_imm*(cpu: var CPU, imm_val: uint32) =
+  if cpu.ccr.ltf == false: cpu.pc = imm_val
+
+proc jlte_reg*(cpu: var CPU, reg_src: uint32) =
+  if cpu.ccr.ltf == true or cpu.ccr.zf == true:
+    cpu.pc = cpu.reg[reg_src]
+
+proc jlte_imm*(cpu: var CPU, imm_val: uint32) =
+  if cpu.ccr.ltf == true or cpu.ccr.zf == true:
+    cpu.pc = imm_val
+
+proc jgte_reg*(cpu: var CPU, reg_src: uint32) =
+  if cpu.ccr.ltf == false or cpu.ccr.zf == true:
+    cpu.pc = cpu.reg[reg_src]
+
+proc jgte_imm*(cpu: var CPU, imm_val: uint32) =
+  if cpu.ccr.ltf == false or cpu.ccr.zf == true:
+    cpu.pc = imm_val
+
 # Stuff related to running a program
 
 proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
