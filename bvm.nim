@@ -21,7 +21,31 @@ type INX* = enum
   SUB_R,
   SUB_I,
   LDR_I,
-  LDR_M
+  LDR_M,
+  STR_I,
+  STR_R,
+  INV_R,
+  AND_R,
+  OR_R,
+  OR_I,
+  XOR_R,
+  XOR_I,
+  TEST_R,
+  JMP_R,
+  JMP_I,
+  JEQ_R,
+  JEQ_I,
+  JNE_R,
+  JNE_I,
+  JLT_R,
+  JLT_I,
+  JGT_R,
+  JGT_I,
+  JLTE_R,
+  JLTE_I,
+  JGTE_R,
+  JGTE_I
+
 
 type CCR* = object
   ## CCR - the code condition register, made up of flags
@@ -188,21 +212,21 @@ proc test_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
 ]#
 
 proc jmp_reg*(cpu: var CPU, reg_src: uint32) =
-  ## `jmp_reg` jumps to the 32 bit memory address in
+  ## `jmp_reg` jumps unconditionally to the 32bit memory address in
   ## register source
   cpu.pc = cpu.reg[reg_src]
 
 proc jmp_imm*(cpu: var CPU, imm_val: uint32) =
-  ## `jmp_imm` jumps to the immediate 32 bit memory address
+  ## `jmp_imm` jumps unconditionally to the immediate 32bit memory address
   cpu.pc = imm_val
 
 proc jeq_reg*(cpu: var CPU, reg_src: uint32) =
-  ## `jeq_reg` jumps to the 32 bit memory address in
+  ## `jeq_reg` jumps to the 32bit memory address in
   ## register source if the zero flag is set
   if cpu.ccr.zf == true: cpu.pc = cpu.reg[reg_src]
 
 proc jeq_imm*(cpu: var CPU, imm_val: uint32) =
-  ## `jeq_imm` jumps to the immediate 32 bit memory address
+  ## `jeq_imm` jumps to the immediate 32bit memory address
   ## if the zero flag is set
   if cpu.ccr.zf == true: cpu.pc = imm_val
 
@@ -212,52 +236,52 @@ proc jne_reg*(cpu: var CPU, reg_src: uint32) =
   if cpu.ccr.zf == false: cpu.pc = cpu.reg[reg_src]
 
 proc jne_imm*(cpu: var CPU, imm_val: uint32) =
-  ## `jne_imm` jumps to the immediate 32 bit memory address
+  ## `jne_imm` jumps to the immediate 32bit memory address
   ## if the zero flag is not set
   if cpu.ccr.zf == false: cpu.pc = imm_val
 
 proc jlt_reg*(cpu: var CPU, reg_src: uint32) =
-  ## `jlt_reg` jumps the 32 bit memory address in
+  ## `jlt_reg` jumps to the 32bit memory address in
   ## register source if the less than flag is set
   if cpu.ccr.ltf == true: cpu.pc = cpu.reg[reg_src]
 
 proc jlt_imm*(cpu: var CPU, imm_val: uint32) =
-  ## `jlt_imm` jumps to the immediate 32 bit memory address
+  ## `jlt_imm` jumps to the immediate 32bit memory address
   ## if the less than flag is set
   if cpu.ccr.ltf == true: cpu.pc = imm_val
 
 proc jgt_reg*(cpu: var CPU, reg_src: uint32) =
-  ## `jgt_reg` jumps the 32 bit memory address in
+  ## `jgt_reg` jumps to the 32bit memory address in
   ## register source if the less than flag is not set
   if cpu.ccr.ltf == false: cpu.pc = cpu.reg[reg_src]
 
 proc jgt_imm*(cpu: var CPU, imm_val: uint32) =
-  ## `jgt_imm` jumps  to the immediate 32 bit memory address
+  ## `jgt_imm` jumps to the immediate 32bit memory address
   ## if the less than flag is not set
   if cpu.ccr.ltf == false: cpu.pc = imm_val
 
 proc jlte_reg*(cpu: var CPU, reg_src: uint32) =
-  ## `jlte_reg` jumps the 32 bit memory address in
-  ## register source if the less than flag is set
-  ## or the zero flag is set
+  ## `jlte_reg` jumps to the 32bit memory address in
+  ## register source if the less than flag is set or
+  ## the zero flag is set
   if cpu.ccr.ltf == true or cpu.ccr.zf == true:
     cpu.pc = cpu.reg[reg_src]
 
 proc jlte_imm*(cpu: var CPU, imm_val: uint32) =
-  ## `jlte_imm` jumps to the immediate 32 bit memory address
+  ## `jlte_imm` jumps to the immediate 32bit memory address
   ## if the less than flag is set or the zero flag is set
   if cpu.ccr.ltf == true or cpu.ccr.zf == true:
     cpu.pc = imm_val
 
 proc jgte_reg*(cpu: var CPU, reg_src: uint32) =
-  ## `jgte_reg` jumps the 32 bit memory address in
+  ## `jgte_reg` jumps to the 32bit memory address in
   ## register source if the less than flag is not set
   ## or the zero flag is set
   if cpu.ccr.ltf == false or cpu.ccr.zf == true:
     cpu.pc = cpu.reg[reg_src]
 
 proc jgte_imm*(cpu: var CPU, imm_val: uint32) =
-  ## `jgte_imm` jumps to the immediate 32 bit memory address
+  ## `jgte_imm` jumps to the immediate 32bit memory address
   ## if the less than flag is not set or the zero flag is set
   if cpu.ccr.ltf == false or cpu.ccr.zf == true:
     cpu.pc = imm_val
@@ -270,7 +294,7 @@ proc jgte_imm*(cpu: var CPU, imm_val: uint32) =
 ]#
 
 proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
-  ## TODO docs
+  ## `exec_inx` executes an instruction on the vm
   case inx
   of NOP:
     cpu.nop()
@@ -278,6 +302,14 @@ proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
     cpu.add_imm(rs, imm_val)
   of ADD_R:
     cpu.add_reg(rs, rd)
+  of SUB_I:
+    cpu.sub_imm(rs, imm_val)
+  of SUB_R:
+    cpu.sub_reg(rs, rd)
+  of LDR_I:
+    cpu.ldr_imm(rs, imm_val)
+  of LDR_M:
+    cpu.ldr_mem(rs, imm_val)
   else:
     echo "Case not handled. inx: ", inx
 
