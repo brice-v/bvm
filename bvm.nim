@@ -327,6 +327,7 @@ suite "vmtest":
     check(vm.reg[0] != 1)
     check(vm.reg[0] == 0)
 
+  echo " Doing instructions | 🤖 |"
   test "add_reg":
     vm.reg[0] = 1
     vm.reg[1] = 2
@@ -358,6 +359,57 @@ suite "vmtest":
     vm.ldr_mem(0, 1234)
     check(vm.reg[0] == 4321)
 
+  test "str_imm":
+    let
+      adx = 1234'u32
+      val = 4321'u32
+    vm.str_imm(adx, val)
+    check(vm.mem[adx] == val)
+  test "str_reg":
+    check(1==0)
+  test "inv_reg":
+    check(1==0)
+  test "and_reg":
+    check(1==0)
+  test "and_imm":
+    check(1==0)
+  test "or_reg":
+    check(1==0)
+  test "or_imm":
+    check(1==0)
+  test "xor_reg":
+    check(1==0)
+  test "xor_imm":
+    check(1==0)
+  test "jmp_reg":
+    check(1==0)
+  test "jmp_imm":
+    check(1==0)
+  test "jeq_reg":
+    check(1==0)
+  test "jeq_imm":
+    check(1==0)
+  test "jne_reg":
+    check(1==0)
+  test "jne_imm":
+    check(1==0)
+  test "jlt_reg":
+    check(1==0)
+  test "jlt_imm":
+    check(1==0)
+  test "jgt_reg":
+    check(1==0)
+  test "jgt_imm":
+    check(1==0)
+  test "jlte_reg":
+    check(1==0)
+  test "jlte_imm":
+    check(1==0)
+  test "jgte_reg":
+    check(1==0)
+  test "jgte_imm":
+    check(1==0)
+  # TODO: Handle test cases for test_reg
   test "make sure program counter increments":
     vm.exec_inx(NOP)
     check(vm.pc == 1)
