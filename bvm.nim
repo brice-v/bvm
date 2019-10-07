@@ -188,48 +188,77 @@ proc test_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
 ]#
 
 proc jmp_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `jmp_reg` jumps to the 32 bit memory address in
+  ## register source
   cpu.pc = cpu.reg[reg_src]
 
 proc jmp_imm*(cpu: var CPU, imm_val: uint32) =
+  ## `jmp_imm` jumps to the immediate 32 bit memory address
   cpu.pc = imm_val
 
 proc jeq_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `jeq_reg` jumps to the 32 bit memory address in
+  ## register source if the zero flag is set
   if cpu.ccr.zf == true: cpu.pc = cpu.reg[reg_src]
 
 proc jeq_imm*(cpu: var CPU, imm_val: uint32) =
+  ## `jeq_imm` jumps to the immediate 32 bit memory address
+  ## if the zero flag is set
   if cpu.ccr.zf == true: cpu.pc = imm_val
 
 proc jne_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `jne_reg` jumps the 32 bit memory address in
+  ## register source if the zero flag is not set
   if cpu.ccr.zf == false: cpu.pc = cpu.reg[reg_src]
 
 proc jne_imm*(cpu: var CPU, imm_val: uint32) =
+  ## `jne_imm` jumps to the immediate 32 bit memory address
+  ## if the zero flag is not set
   if cpu.ccr.zf == false: cpu.pc = imm_val
 
 proc jlt_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `jlt_reg` jumps the 32 bit memory address in
+  ## register source if the less than flag is set
   if cpu.ccr.ltf == true: cpu.pc = cpu.reg[reg_src]
 
 proc jlt_imm*(cpu: var CPU, imm_val: uint32) =
+  ## `jlt_imm` jumps to the immediate 32 bit memory address
+  ## if the less than flag is set
   if cpu.ccr.ltf == true: cpu.pc = imm_val
 
 proc jgt_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `jgt_reg` jumps the 32 bit memory address in
+  ## register source if the less than flag is not set
   if cpu.ccr.ltf == false: cpu.pc = cpu.reg[reg_src]
 
 proc jgt_imm*(cpu: var CPU, imm_val: uint32) =
+  ## `jgt_imm` jumps  to the immediate 32 bit memory address
+  ## if the less than flag is not set
   if cpu.ccr.ltf == false: cpu.pc = imm_val
 
 proc jlte_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `jlte_reg` jumps the 32 bit memory address in
+  ## register source if the less than flag is set
+  ## or the zero flag is set
   if cpu.ccr.ltf == true or cpu.ccr.zf == true:
     cpu.pc = cpu.reg[reg_src]
 
 proc jlte_imm*(cpu: var CPU, imm_val: uint32) =
+  ## `jlte_imm` jumps to the immediate 32 bit memory address
+  ## if the less than flag is set or the zero flag is set
   if cpu.ccr.ltf == true or cpu.ccr.zf == true:
     cpu.pc = imm_val
 
 proc jgte_reg*(cpu: var CPU, reg_src: uint32) =
+  ## `jgte_reg` jumps the 32 bit memory address in
+  ## register source if the less than flag is not set
+  ## or the zero flag is set
   if cpu.ccr.ltf == false or cpu.ccr.zf == true:
     cpu.pc = cpu.reg[reg_src]
 
 proc jgte_imm*(cpu: var CPU, imm_val: uint32) =
+  ## `jgte_imm` jumps to the immediate 32 bit memory address
+  ## if the less than flag is not set or the zero flag is set
   if cpu.ccr.ltf == false or cpu.ccr.zf == true:
     cpu.pc = imm_val
 

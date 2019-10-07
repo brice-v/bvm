@@ -1123,98 +1123,98 @@ newCPU returns a fully initalized (zero'd) cpu
 <dt><pre><span class="Keyword">proc</span> <a href="#jmp_reg%2CCPU%2Cuint32"><span class="Identifier">jmp_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jmp_reg</span></tt> jumps to the 32 bit memory address in register source
 
 </dd>
 <a id="jmp_imm,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jmp_imm%2CCPU%2Cuint32"><span class="Identifier">jmp_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jmp_imm</span></tt> jumps to the immediate 32 bit memory address
 
 </dd>
 <a id="jeq_reg,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jeq_reg%2CCPU%2Cuint32"><span class="Identifier">jeq_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jeq_reg</span></tt> jumps to the 32 bit memory address in register source if the zero flag is set
 
 </dd>
 <a id="jeq_imm,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jeq_imm%2CCPU%2Cuint32"><span class="Identifier">jeq_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jeq_imm</span></tt> jumps to the immediate 32 bit memory address if the zero flag is set
 
 </dd>
 <a id="jne_reg,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jne_reg%2CCPU%2Cuint32"><span class="Identifier">jne_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jne_reg</span></tt> jumps the 32 bit memory address in register source if the zero flag is not set
 
 </dd>
 <a id="jne_imm,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jne_imm%2CCPU%2Cuint32"><span class="Identifier">jne_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jne_imm</span></tt> jumps to the immediate 32 bit memory address if the zero flag is not set
 
 </dd>
 <a id="jlt_reg,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jlt_reg%2CCPU%2Cuint32"><span class="Identifier">jlt_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jlt_reg</span></tt> jumps the 32 bit memory address in register source if the less than flag is set
 
 </dd>
 <a id="jlt_imm,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jlt_imm%2CCPU%2Cuint32"><span class="Identifier">jlt_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jlt_imm</span></tt> jumps to the immediate 32 bit memory address if the less than flag is set
 
 </dd>
 <a id="jgt_reg,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jgt_reg%2CCPU%2Cuint32"><span class="Identifier">jgt_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jgt_reg</span></tt> jumps the 32 bit memory address in register source if the less than flag is not set
 
 </dd>
 <a id="jgt_imm,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jgt_imm%2CCPU%2Cuint32"><span class="Identifier">jgt_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jgt_imm</span></tt> jumps  to the immediate 32 bit memory address if the less than flag is not set
 
 </dd>
 <a id="jlte_reg,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jlte_reg%2CCPU%2Cuint32"><span class="Identifier">jlte_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jlte_reg</span></tt> jumps the 32 bit memory address in register source if the less than flag is set or the zero flag is set
 
 </dd>
 <a id="jlte_imm,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jlte_imm%2CCPU%2Cuint32"><span class="Identifier">jlte_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jlte_imm</span></tt> jumps to the immediate 32 bit memory address if the less than flag is set or the zero flag is set
 
 </dd>
 <a id="jgte_reg,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jgte_reg%2CCPU%2Cuint32"><span class="Identifier">jgte_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jgte_reg</span></tt> jumps the 32 bit memory address in register source if the less than flag is not set or the zero flag is set
 
 </dd>
 <a id="jgte_imm,CPU,uint32"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#jgte_imm%2CCPU%2Cuint32"><span class="Identifier">jgte_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-
+<tt class="docutils literal"><span class="pre">jgte_imm</span></tt> jumps to the immediate 32 bit memory address if the less than flag is not set or the zero flag is set
 
 </dd>
 
@@ -1227,7 +1227,7 @@ newCPU returns a fully initalized (zero'd) cpu
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-09-30 00:43:01 UTC</small>
+        <small>Made with Nim. Generated: 2019-10-07 00:31:52 UTC</small>
       </div>
     </div>
   </div>
