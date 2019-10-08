@@ -867,9 +867,9 @@ function main() {
   <li><a class="reference" href="#ldr_mem%2CCPU%2Cuint32%2Cuint32"
     title="ldr_mem(cpu: var CPU; reg_src, mem_addr: uint32)"><wbr />ldr_<wbr />mem<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#str_imm%2CCPU%2Cuint32%2Cuint32"
-    title="str_imm(cpu: var CPU; mem_addr, imm_val: uint32)"><wbr />str_<wbr />imm<span class="attachedType">CPU</span></a></li>
+    title="str_imm(cpu: var CPU; imm_val, mem_addr: uint32)"><wbr />str_<wbr />imm<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#str_reg%2CCPU%2Cuint32%2Cuint32"
-    title="str_reg(cpu: var CPU; mem_addr, reg_src: uint32)"><wbr />str_<wbr />reg<span class="attachedType">CPU</span></a></li>
+    title="str_reg(cpu: var CPU; reg_src, mem_addr: uint32)"><wbr />str_<wbr />reg<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#add_reg%2CCPU%2Cuint32%2Cuint32"
     title="add_reg(cpu: var CPU; reg_src, reg_dest: uint32)"><wbr />add_<wbr />reg<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#add_imm%2CCPU%2Cuint32%2Cuint32"
@@ -1022,14 +1022,14 @@ newCPU returns a fully initalized (zero'd) cpu
 
 </dd>
 <a id="str_imm,CPU,uint32,uint32"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#str_imm%2CCPU%2Cuint32%2Cuint32"><span class="Identifier">str_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">mem_addr</span><span class="Other">,</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#str_imm%2CCPU%2Cuint32%2Cuint32"><span class="Identifier">str_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">,</span> <span class="Identifier">mem_addr</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 <tt class="docutils literal"><span class="pre">str_imm</span></tt> takes the 32 bit immediate value and places it at the memory address
 
 </dd>
 <a id="str_reg,CPU,uint32,uint32"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#str_reg%2CCPU%2Cuint32%2Cuint32"><span class="Identifier">str_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">mem_addr</span><span class="Other">,</span> <span class="Identifier">reg_src</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#str_reg%2CCPU%2Cuint32%2Cuint32"><span class="Identifier">str_reg</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">reg_src</span><span class="Other">,</span> <span class="Identifier">mem_addr</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 <tt class="docutils literal"><span class="pre">str_reg</span></tt> takes the 32 bit value located at reg_src and places it at the memory address location
@@ -1231,7 +1231,7 @@ newCPU returns a fully initalized (zero'd) cpu
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-10-07 23:25:10 UTC</small>
+        <small>Made with Nim. Generated: 2019-10-08 00:47:44 UTC</small>
       </div>
     </div>
   </div>

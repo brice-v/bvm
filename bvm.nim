@@ -103,12 +103,12 @@ proc ldr_mem*(cpu: var CPU, reg_src, mem_addr: uint32) =
   # TODO could do a check before this to make sure mem_addr can work
   # for now we will assume its always correct
 
-proc str_imm*(cpu: var CPU, mem_addr, imm_val: uint32) =
+proc str_imm*(cpu: var CPU, imm_val, mem_addr: uint32) =
   ## `str_imm` takes the 32 bit immediate value and places it at the
   ## memory address
   cpu.mem[mem_addr] = imm_val
 
-proc str_reg*(cpu: var CPU, mem_addr, reg_src: uint32) =
+proc str_reg*(cpu: var CPU, reg_src, mem_addr: uint32) =
   ## `str_reg` takes the 32 bit value located at reg_src and places
   ## it at the memory address location
   cpu.mem[mem_addr] = cpu.reg[reg_src]
@@ -436,55 +436,64 @@ suite "vmtest":
     check(vm.reg[0] == 4321)
 
   test "str_imm":
-    let
-      adx = 1234'u32
-      val = 4321'u32
-    vm.str_imm(adx, val)
-    check(vm.mem[adx] == val)
+    vm.str_imm(4321,1234)
+    check(vm.mem[1234] == 4321)
+
   test "str_reg":
-    check(1==0)
+    vm.reg[0] = 1234
+    vm.str_reg(0, 4321)
+    check(vm.mem[4321] == 1234)
+
   test "inv_reg":
-    check(1==0)
+    vm.reg[0] = 4294967295'u32
+    vm.inv_reg(0)
+    check(vm.reg[0] == 0x0000)
   test "and_reg":
-    check(1==0)
+    vm.reg[0] = 0xF0F0
+    vm.reg[1] = 0x0F0F
+    check(vm.reg[0] == 0xF0F0)
+    check(vm.reg[1] == 0x0F0F)
+    vm.and_reg(0, 1)
+    check(vm.reg[0] == 0)
+    check(vm.reg[1] ==  0x0F0F)
   test "and_imm":
-    check(1==0)
+    check(1 == 0)
   test "or_reg":
-    check(1==0)
+    check(1 == 0)
   test "or_imm":
-    check(1==0)
+    check(1 == 0)
   test "xor_reg":
-    check(1==0)
+    check(1 == 0)
   test "xor_imm":
-    check(1==0)
+    check(1 == 0)
   test "jmp_reg":
-    check(1==0)
+    check(1 == 0)
   test "jmp_imm":
-    check(1==0)
+    check(1 == 0)
   test "jeq_reg":
-    check(1==0)
+    check(1 == 0)
   test "jeq_imm":
-    check(1==0)
+    check(1 == 0)
   test "jne_reg":
-    check(1==0)
+    check(1 == 0)
   test "jne_imm":
-    check(1==0)
+    check(1 == 0)
   test "jlt_reg":
-    check(1==0)
+    check(1 == 0)
   test "jlt_imm":
-    check(1==0)
+    check(1 == 0)
   test "jgt_reg":
-    check(1==0)
+    check(1 == 0)
   test "jgt_imm":
-    check(1==0)
+    check(1 == 0)
   test "jlte_reg":
-    check(1==0)
+    check(1 == 0)
   test "jlte_imm":
-    check(1==0)
+    check(1 == 0)
   test "jgte_reg":
-    check(1==0)
+    check(1 == 0)
   test "jgte_imm":
-    check(1==0)
+    check(1 == 0)
   # TODO: Handle test cases for test_reg
   test "make sure program counter increments":
     vm.exec_inx(NOP)
