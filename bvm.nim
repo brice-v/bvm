@@ -310,8 +310,52 @@ proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
     cpu.ldr_imm(rs, imm_val)
   of LDR_M:
     cpu.ldr_mem(rs, imm_val)
-  else:
-    echo "Case not handled. inx: ", inx
+  of STR_I:
+    cpu.str_imm(rs, imm_val)
+  of STR_R:
+    cpu.str_reg(imm_val, rs)
+  of INV_R:
+    cpu.inv_reg(rs)
+  of AND_R:
+    cpu.and_reg(rs, rd)
+  of OR_R:
+    cpu.or_reg(rs, rd)
+  of OR_I:
+    cpu.or_imm(rs, imm_val)
+  of XOR_R:
+    cpu.xor_reg(rs, rd)
+  of XOR_I:
+    cpu.xor_imm(rs, imm_val)
+  of TEST_R:
+    cpu.test_reg(rs, rd)
+  of JMP_R:
+    cpu.jmp_reg(rs)
+  of JMP_I:
+    cpu.jmp_imm(imm_val)
+  of JEQ_R:
+    cpu.jeq_reg(rs)
+  of JEQ_I:
+    cpu.jeq_imm(rs)
+  of JNE_R:
+    cpu.jne_reg(rs)
+  of JNE_I:
+    cpu.jne_imm(imm_val)
+  of JLT_R:
+    cpu.jlt_reg(rs)
+  of JLT_I:
+    cpu.jlt_imm(imm_val)
+  of JGT_R:
+    cpu.jgt_reg(rs)
+  of JGT_I:
+    cpu.jgt_imm(imm_val)
+  of JLTE_R:
+    cpu.jlte_reg(rs)
+  of JLTE_I:
+    cpu.jlte_imm(imm_val)
+  of JGTE_R:
+    cpu.jgte_reg(rs)
+  of JGTE_I:
+    cpu.jgte_imm(imm_val)
 
   # always increment the program counter
   # eventually maybe we will simulate different
