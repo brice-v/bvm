@@ -403,7 +403,7 @@ suite "vmtest":
     check(vm.reg[0] != 1)
     check(vm.reg[0] == 0)
 
-  echo " Doing instructions | 🤖 |"
+  echo "[ Doing instructions 🤖...]"
   test "add_reg":
     vm.reg[0] = 1
     vm.reg[1] = 2
@@ -459,10 +459,10 @@ suite "vmtest":
   test "and_imm":
     vm.reg[0] = 0b01011
     vm.reg[1] = 0b01011
-    vm.and_imm(0, 0b11111'u32)
-    vm.and_imm(1, 0b00000'u32)
-    check(vm.reg[0] == 0b01011'u32)
-    check(vm.reg[1] == 0b00000'u32)
+    vm.and_imm(0, 0b11111)
+    vm.and_imm(1, 0b00000)
+    check(vm.reg[0] == 0b01011)
+    check(vm.reg[1] == 0b00000)
   test "or_reg":
     vm.reg[0] = 0b01011
     vm.reg[1] = 0b10100
@@ -482,9 +482,14 @@ suite "vmtest":
     vm.xor_imm(0, 0b11110)
     check(vm.reg[0] == 0b10101)
   test "jmp_reg":
-    check(1 == 0)
+    check(vm.pc == 0)
+    vm.reg[0] = 0x1234
+    vm.jmp_reg(0)
+    check(vm.pc == 0x1234)
   test "jmp_imm":
-    check(1 == 0)
+    check(vm.pc == 0)
+    vm.jmp_imm(0x1234)
+    check(vm.pc == 0x1234)
   test "jeq_reg":
     check(1 == 0)
   test "jeq_imm":
