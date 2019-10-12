@@ -436,7 +436,7 @@ suite "vmtest":
     check(vm.reg[0] == 4321)
 
   test "str_imm":
-    vm.str_imm(4321,1234)
+    vm.str_imm(4321, 1234)
     check(vm.mem[1234] == 4321)
 
   test "str_reg":
@@ -455,17 +455,32 @@ suite "vmtest":
     check(vm.reg[1] == 0x0F0F)
     vm.and_reg(0, 1)
     check(vm.reg[0] == 0)
-    check(vm.reg[1] ==  0x0F0F)
+    check(vm.reg[1] == 0x0F0F)
   test "and_imm":
-    check(1 == 0)
+    vm.reg[0] = 0b01011
+    vm.reg[1] = 0b01011
+    vm.and_imm(0, 0b11111'u32)
+    vm.and_imm(1, 0b00000'u32)
+    check(vm.reg[0] == 0b01011'u32)
+    check(vm.reg[1] == 0b00000'u32)
   test "or_reg":
-    check(1 == 0)
+    vm.reg[0] = 0b01011
+    vm.reg[1] = 0b10100
+    vm.or_reg(0, 1)
+    check(vm.reg[0] == 0b11111)
   test "or_imm":
-    check(1 == 0)
+    vm.reg[0] = 0b1010
+    vm.or_imm(0, 0b0101)
+    check(vm.reg[0] == 0b1111)
   test "xor_reg":
-    check(1 == 0)
+    vm.reg[0] = 0b01011
+    vm.reg[1] = 0b11110
+    vm.xor_reg(0, 1)
+    check(vm.reg[0] == 0b10101)
   test "xor_imm":
-    check(1 == 0)
+    vm.reg[0] = 0b01011
+    vm.xor_imm(0, 0b11110)
+    check(vm.reg[0] == 0b10101)
   test "jmp_reg":
     check(1 == 0)
   test "jmp_imm":
