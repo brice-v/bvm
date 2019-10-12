@@ -198,7 +198,7 @@ proc test_reg*(cpu: var CPU, reg_src, reg_dest: uint32) =
   ## negative flag is set when there is a bit in the sign field as
   ## the result of source register - destination register
   ## (use a reg with zero as the dest to just check 1 register)
-  cpu.ccr.ltf = if cpu.reg[reg_src] > cpu.reg[reg_dest]: true else: false
+  cpu.ccr.ltf = if cpu.reg[reg_src] < cpu.reg[reg_dest]: true else: false
 
   let tmp_result = cpu.reg[reg_src] - cpu.reg[reg_dest]
   let sign_bit = 2_147_483_642'u32 # this is just a 1 in the 32nd position
@@ -490,8 +490,33 @@ suite "vmtest":
     check(vm.pc == 0)
     vm.jmp_imm(0x1234)
     check(vm.pc == 0x1234)
+  test "test_reg":
+    vm.reg[0] = 100
+    vm.reg[1] = 10
+    vm.test_reg(0, 1)
+    check(vm.reg[0] == 100)
+    check(vm.ccr.ltf == false)
+    check(vm.ccr.nf == false)
+    check(vm.ccr.zf == false)
+    vm.reg[2] = 100
+    vm.reg[3] = 100
+    vm.test_reg(2, 3)
+    check(vm.ccr.zf == true)
+    check(vm.ccr.ltf == false)
+    check(vm.ccr.nf == false)
+    vm.reg[4] = 10
+    vm.reg[5] = 100
+    vm.test_reg(4, 5)
+    check(vm.ccr.zf == false)
+    check(vm.ccr.ltf == true)
+    check(vm.ccr.nf == true)
   test "jeq_reg":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 100
+    vm.reg[2] = 0x1234
+    vm.test_reg(0, 1)
+    vm.jeq_reg(2)
+    check(vm.pc == 0x1234)
   test "jeq_imm":
     check(1 == 0)
   test "jne_reg":
@@ -514,7 +539,6 @@ suite "vmtest":
     check(1 == 0)
   test "jgte_imm":
     check(1 == 0)
-  # TODO: Handle test cases for test_reg
   test "make sure program counter increments":
     vm.exec_inx(NOP)
     check(vm.pc == 1)
