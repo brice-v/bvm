@@ -26,6 +26,7 @@ type INX* = enum
   STR_R,
   INV_R,
   AND_R,
+  AND_I,
   OR_R,
   OR_I,
   XOR_R,
@@ -298,36 +299,55 @@ proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
   case inx
   of NOP:
     cpu.nop()
+    cpu.pc += 1
   of ADD_I:
     cpu.add_imm(rs, imm_val)
+    cpu.pc += 1
   of ADD_R:
     cpu.add_reg(rs, rd)
+    cpu.pc += 1
   of SUB_I:
     cpu.sub_imm(rs, imm_val)
+    cpu.pc += 1
   of SUB_R:
     cpu.sub_reg(rs, rd)
+    cpu.pc += 1
   of LDR_I:
     cpu.ldr_imm(rs, imm_val)
+    cpu.pc += 1
   of LDR_M:
     cpu.ldr_mem(rs, imm_val)
+    cpu.pc += 1
   of STR_I:
     cpu.str_imm(rs, imm_val)
+    cpu.pc += 1
   of STR_R:
-    cpu.str_reg(imm_val, rs)
+    cpu.str_reg(rs, imm_val)
+    cpu.pc += 1
   of INV_R:
     cpu.inv_reg(rs)
+    cpu.pc += 1
   of AND_R:
     cpu.and_reg(rs, rd)
+    cpu.pc += 1
+  of AND_I:
+    cpu.and_imm(rs, imm_val)
+    cpu.pc += 1
   of OR_R:
     cpu.or_reg(rs, rd)
+    cpu.pc += 1
   of OR_I:
     cpu.or_imm(rs, imm_val)
+    cpu.pc += 1
   of XOR_R:
     cpu.xor_reg(rs, rd)
+    cpu.pc += 1
   of XOR_I:
     cpu.xor_imm(rs, imm_val)
+    cpu.pc += 1
   of TEST_R:
     cpu.test_reg(rs, rd)
+    cpu.pc += 1
   of JMP_R:
     cpu.jmp_reg(rs)
   of JMP_I:
@@ -356,11 +376,6 @@ proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
     cpu.jgte_reg(rs)
   of JGTE_I:
     cpu.jgte_imm(imm_val)
-
-  # always increment the program counter
-  # eventually maybe we will simulate different
-  # instructions have different number of cycles
-  cpu.pc += 1
 
 #[
   Main program mostly for debugging, could turn this
@@ -409,41 +424,33 @@ suite "vmtest":
     vm.reg[1] = 2
     vm.add_reg(0, 1)
     check(vm.reg[0] == 3)
-
   test "add_imm":
     vm.reg[0] = 1
     vm.add_imm(0, 1234)
     check(vm.reg[0] == 1235)
-
   test "sub_reg":
     vm.reg[0] = 3
     vm.reg[1] = 1
     vm.sub_reg(0, 1)
     check(vm.reg[0] == 2)
-
   test "sub_imm":
     vm.reg[0] = 3
     vm.sub_imm(0, 1)
     check(vm.reg[0] == 2)
-
   test "ldr_imm":
     vm.ldr_imm(0, 1234)
     check(vm.reg[0] == 1234)
-
   test "ldr_mem":
     vm.mem[1234] = 4321
     vm.ldr_mem(0, 1234)
     check(vm.reg[0] == 4321)
-
   test "str_imm":
     vm.str_imm(4321, 1234)
     check(vm.mem[1234] == 4321)
-
   test "str_reg":
     vm.reg[0] = 1234
     vm.str_reg(0, 4321)
     check(vm.mem[4321] == 1234)
-
   test "inv_reg":
     vm.reg[0] = 4294967295'u32
     vm.inv_reg(0)
@@ -628,39 +635,95 @@ suite "Test running instructions":
     check(cpu.pc == 5)
 
   test "NOP":
-    check(1 == 0)
+    cpu.exec_inx(NOP)
+    check(cpu.pc == 1)
   test "ADD_R":
-    check(1 == 0)
+    cpu.reg[0] = 1
+    cpu.reg[1] = 2
+    cpu.exec_inx(ADD_R, rs = 0, rd = 1)
+    check(cpu.reg[0] == 3)
   test "ADD_I":
-    check(1 == 0)
+    cpu.reg[0] = 1
+    cpu.exec_inx(ADD_I, imm_val = 1)
+    check(cpu.reg[0] == 2)
   test "SUB_R":
-    check(1 == 0)
+    cpu.reg[0] = 3
+    cpu.reg[1] = 2
+    cpu.exec_inx(SUB_R, rs = 0, rd = 1)
+    check(cpu.reg[0] == 1)
   test "SUB_I":
-    check(1 == 0)
+    cpu.reg[0] = 1
+    cpu.exec_inx(SUB_I, imm_val = 1)
+    check(cpu.reg[0] == 0)
   test "LDR_I":
-    check(1 == 0)
+    cpu.exec_inx(LDR_I, imm_val = 1234, rs = 0)
+    check(cpu.reg[0] == 1234)
   test "LDR_M":
-    check(1 == 0)
+    cpu.mem[1234] = 19
+    cpu.exec_inx(LDR_M, imm_val = 1234, rs = 0)
+    check(cpu.reg[0] == 19)
   test "STR_I":
-    check(1 == 0)
+    cpu.exec_inx(STR_I, rs = 4321, imm_val = 1234) # imm_val is mem_addr
+    check(cpu.mem[1234] == 4321)
   test "STR_R":
-    check(1 == 0)
+    cpu.reg[0] = 1234
+    cpu.exec_inx(STR_R, rs = 0, imm_val = 4321) # imm_val is mem_addr
+    check(cpu.mem[4321] == 1234)
   test "INV_R":
-    check(1 == 0)
+    cpu.reg[0] = 0
+    cpu.exec_inx(INV_R, rs = 0)
+    check(cpu.reg[0] == 0xFFFF_FFFF'u32)
   test "AND_R":
-    check(1 == 0)
+    cpu.reg[0] = 0xF0F0
+    cpu.reg[1] = 0x0F0F
+    cpu.exec_inx(AND_R, rs = 0, rd = 1)
+    check(cpu.reg[0] == 0)
+  test "AND_I":
+    cpu.reg[0] = 0xF0F0
+    cpu.exec_inx(AND_I, rs = 0, imm_val = 0x0F0F)
+    check(cpu.reg[0] == 0)
   test "OR_R":
-    check(1 == 0)
+    cpu.reg[0] = 0xF0F0
+    cpu.reg[1] = 0x0F0F
+    cpu.exec_inx(OR_R, rs = 0, rd = 1)
+    check(cpu.reg[0] == 0xFFFF)
   test "OR_I":
-    check(1 == 0)
+    cpu.reg[0] = 0xF0F0
+    cpu.exec_inx(OR_I, rs = 0, imm_val = 0x0F0F)
+    check(cpu.reg[0] == 0xFFFF)
   test "XOR_R":
-    check(1 == 0)
+    cpu.reg[0] = 0b1010_1111
+    cpu.reg[1] = 0b1111_1010
+    cpu.exec_inx(XOR_R, rs = 0, rd = 1)
+    check(cpu.reg[0] == 0b0101_0101)
   test "XOR_I":
-    check(1 == 0)
+    cpu.reg[0] = 0b1010_1111
+    cpu.reg[1] = 0b1111_1010
+    cpu.exec_inx(XOR_I, rs = 0, imm_val = 0b1111_1010)
+    check(cpu.reg[0] == 0b0101_0101)
   test "TEST_R":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 10
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    check(cpu.ccr.ltf == false)
+    check(cpu.ccr.nf == false)
+    check(cpu.ccr.zf == false)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 101
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    check(cpu.ccr.ltf == true)
+    check(cpu.ccr.nf == true)
+    check(cpu.ccr.zf == false)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 100
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    check(cpu.ccr.ltf == false)
+    check(cpu.ccr.nf == false)
+    check(cpu.ccr.zf == true)
   test "JMP_R":
-    check(1 == 0)
+    cpu.reg[0] = 1234
+    cpu.exec_inx(JMP_R, rs = 0)
+    check(cpu.pc == 1234)
   test "JMP_I":
     check(1 == 0)
   test "JEQ_R":
