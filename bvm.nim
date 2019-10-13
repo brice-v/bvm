@@ -355,7 +355,7 @@ proc exec_inx(cpu: var CPU, inx: INX, rs, rd, imm_val: uint32 = 0) =
   of JEQ_R:
     cpu.jeq_reg(rs)
   of JEQ_I:
-    cpu.jeq_imm(rs)
+    cpu.jeq_imm(imm_val)
   of JNE_R:
     cpu.jne_reg(rs)
   of JNE_I:
@@ -725,29 +725,107 @@ suite "Test running instructions":
     cpu.exec_inx(JMP_R, rs = 0)
     check(cpu.pc == 1234)
   test "JMP_I":
-    check(1 == 0)
+    cpu.exec_inx(JMP_I, imm_val = 1234)
+    check(cpu.pc == 1234)
   test "JEQ_R":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 100
+    cpu.reg[2] = 1234
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JEQ_R, rs = 2)
+    check(cpu.pc == 1234)
   test "JEQ_I":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 100
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    check(cpu.ccr.zf == true)
+    cpu.exec_inx(JEQ_I, imm_val = 1234)
+    check(cpu.pc == 1234)
   test "JNE_R":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 101
+    cpu.reg[2] = 1234
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JNE_R, rs = 2)
+    check(cpu.pc == 1234)
   test "JNE_I":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 101
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    check(cpu.ccr.zf == false)
+    cpu.exec_inx(JNE_I, imm_val = 1234)
+    check(cpu.pc == 1234)
   test "JLT_R":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 101
+    cpu.reg[2] = 1234
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JLT_R, rs = 2)
+    check(cpu.pc == 1234)
   test "JLT_I":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 101
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JLT_I, imm_val = 1234)
+    check(cpu.pc == 1234)
   test "JGT_R":
-    check(1 == 0)
+    cpu.reg[0] = 101
+    cpu.reg[1] = 100
+    cpu.reg[2] = 1234
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JGT_R, rs = 2)
   test "JGT_I":
-    check(1 == 0)
+    cpu.reg[0] = 101
+    cpu.reg[1] = 100
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JGT_I, imm_val = 1234)
+    check(cpu.pc == 1234)
   test "JLTE_R":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 101
+    cpu.reg[2] = 1234
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JLTE_R, rs = 2)
+    check(cpu.pc == 1234)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 100
+    cpu.reg[2] = 4321
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JLTE_R, rs = 2)
+    check(cpu.pc == 4321)
   test "JLTE_I":
-    check(1 == 0)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 101
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JLTE_I, imm_val = 1234)
+    check(cpu.pc == 1234)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 100
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JLTE_I, imm_val = 4321)
+    check(cpu.pc == 4321)
   test "JGTE_R":
-    check(1 == 0)
+    cpu.reg[0] = 101
+    cpu.reg[1] = 100
+    cpu.reg[2] = 1234
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JGTE_R, rs = 2)
+    check(cpu.pc == 1234)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 100
+    cpu.reg[2] = 4321
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JGTE_R, rs = 2)
+    check(cpu.pc == 4321)
   test "JGTE_I":
-    check(1 == 0)
+    cpu.reg[0] = 101
+    cpu.reg[1] = 100
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JGTE_I, imm_val = 1234)
+    check(cpu.pc == 1234)
+    cpu.reg[0] = 100
+    cpu.reg[1] = 100
+    cpu.exec_inx(TEST_R, rs = 0, rd = 1)
+    cpu.exec_inx(JGTE_I, imm_val = 4321)
+    check(cpu.pc == 4321)
 
