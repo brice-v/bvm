@@ -518,27 +518,98 @@ suite "vmtest":
     vm.jeq_reg(2)
     check(vm.pc == 0x1234)
   test "jeq_imm":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 100
+    vm.test_reg(0, 1)
+    vm.jeq_imm(0x1234)
+    check(vm.pc == 0x1234)
   test "jne_reg":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 101
+    vm.reg[2] = 0x1234
+    vm.test_reg(0, 1)
+    vm.jne_reg(2)
+    check(vm.pc == 0x1234)
   test "jne_imm":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 101
+    vm.test_reg(0, 1)
+    vm.jne_imm(0x1234)
+    check(vm.pc == 0x1234)
   test "jlt_reg":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 101
+    vm.reg[2] = 0x1234
+    vm.test_reg(0, 1)
+    vm.jlt_reg(2)
+    check(vm.pc == 0x1234)
   test "jlt_imm":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 101
+    vm.test_reg(0, 1)
+    vm.jlt_imm(0x1234)
+    check(vm.pc == 0x1234)
   test "jgt_reg":
-    check(1 == 0)
+    vm.reg[0] = 101
+    vm.reg[1] = 100
+    vm.reg[2] = 0x1234
+    vm.test_reg(0, 1)
+    vm.jgt_reg(2)
+    check(vm.pc == 0x1234)
   test "jgt_imm":
-    check(1 == 0)
+    vm.reg[0] = 101
+    vm.reg[1] = 100
+    vm.test_reg(0, 1)
+    vm.jgt_imm(0x1234)
+    check(vm.pc == 0x1234)
   test "jlte_reg":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 101
+    vm.reg[2] = 0x1234
+    vm.test_reg(0, 1)
+    vm.jlte_reg(2)
+    check(vm.pc == 0x1234)
+    vm.reg[3] = 100
+    vm.reg[4] = 100
+    vm.reg[5] = 0x4321
+    vm.test_reg(3, 4)
+    vm.jlte_reg(5)
+    check(vm.pc == 0x4321)
   test "jlte_imm":
-    check(1 == 0)
+    vm.reg[0] = 100
+    vm.reg[1] = 101
+    vm.test_reg(0, 1)
+    vm.jlte_imm(0x1234)
+    check(vm.pc == 0x1234)
+    vm.reg[3] = 100
+    vm.reg[4] = 100
+    vm.test_reg(3, 4)
+    vm.jlte_imm(0x4321)
+    check(vm.pc == 0x4321)
   test "jgte_reg":
-    check(1 == 0)
+    vm.reg[0] = 101
+    vm.reg[1] = 100
+    vm.reg[2] = 0x1234
+    vm.test_reg(0, 1)
+    vm.jgte_reg(2)
+    check(vm.pc == 0x1234)
+    vm.reg[3] = 100
+    vm.reg[4] = 100
+    vm.reg[5] = 0x4321
+    vm.test_reg(3, 4)
+    vm.jgte_reg(5)
+    check(vm.pc == 0x4321)
   test "jgte_imm":
-    check(1 == 0)
+    vm.reg[0] = 101
+    vm.reg[1] = 100
+    vm.test_reg(0, 1)
+    vm.jgte_imm(0x1234)
+    check(vm.pc == 0x1234)
+    vm.reg[3] = 100
+    vm.reg[4] = 100
+    vm.test_reg(3, 4)
+    vm.jgte_imm(0x4321)
+    check(vm.pc == 0x4321)
   test "make sure program counter increments":
     vm.exec_inx(NOP)
     check(vm.pc == 1)
