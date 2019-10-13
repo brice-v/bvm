@@ -104,7 +104,7 @@ proc ldr_mem*(cpu: var CPU, reg_src, mem_addr: uint32) =
   # TODO could do a check before this to make sure mem_addr can work
   # for now we will assume its always correct
 
-proc str_imm*(cpu: var CPU, imm_val, mem_addr: uint32) =
+proc str_imm*(cpu: var CPU, mem_addr, imm_val: uint32) =
   ## `str_imm` takes the 32 bit immediate value and places it at the
   ## memory address
   cpu.mem[mem_addr] = imm_val
@@ -445,7 +445,7 @@ suite "vmtest":
     vm.ldr_mem(0, 1234)
     check(vm.reg[0] == 4321)
   test "str_imm":
-    vm.str_imm(4321, 1234)
+    vm.str_imm(1234, 4321)
     check(vm.mem[1234] == 4321)
   test "str_reg":
     vm.reg[0] = 1234
@@ -663,8 +663,8 @@ suite "Test running instructions":
     cpu.exec_inx(LDR_M, imm_val = 1234, rs = 0)
     check(cpu.reg[0] == 19)
   test "STR_I":
-    cpu.exec_inx(STR_I, rs = 4321, imm_val = 1234) # imm_val is mem_addr
-    check(cpu.mem[1234] == 4321)
+    cpu.exec_inx(STR_I, rs = 4321, imm_val = 1234) # imm_val is mem_addr, rs is the imm_val
+    check(cpu.mem[4321] == 1234)
   test "STR_R":
     cpu.reg[0] = 1234
     cpu.exec_inx(STR_R, rs = 0, imm_val = 4321) # imm_val is mem_addr
@@ -829,3 +829,18 @@ suite "Test running instructions":
     cpu.exec_inx(JGTE_I, imm_val = 4321)
     check(cpu.pc == 4321)
 
+
+
+
+
+#[
+  ASM
+
+
+  ld r0 1234 # Register+Immediate addressing?
+  ld 1234 # Immediate addressing?
+  ld [1234] # Direct (but only for load) addressing
+  str r0
+  and r0 r1 # Register addressing? (inx that look like `_R` )
+  and r0 1234
+]#
