@@ -610,13 +610,81 @@ suite "vmtest":
     vm.test_reg(3, 4)
     vm.jgte_imm(0x4321)
     check(vm.pc == 0x4321)
-  test "make sure program counter increments":
-    vm.exec_inx(NOP)
-    check(vm.pc == 1)
-    vm.exec_inx(NOP)
-    vm.exec_inx(NOP)
-    vm.exec_inx(NOP)
-    vm.exec_inx(ADD_I, 0, 0, 1)
-    check(vm.pc == 5)
 
   echo "Finished VM tests..."
+
+
+suite "Test running instructions":
+  echo "Starting instruction tests..."
+  setup:
+    var cpu = newCPU()
+  test "make sure program counter increments":
+    cpu.exec_inx(NOP)
+    check(cpu.pc == 1)
+    cpu.exec_inx(NOP)
+    cpu.exec_inx(NOP)
+    cpu.exec_inx(NOP)
+    cpu.exec_inx(ADD_I, 0, 0, 1)
+    check(cpu.pc == 5)
+
+  test "NOP":
+    check(1 == 0)
+  test "ADD_R":
+    check(1 == 0)
+  test "ADD_I":
+    check(1 == 0)
+  test "SUB_R":
+    check(1 == 0)
+  test "SUB_I":
+    check(1 == 0)
+  test "LDR_I":
+    check(1 == 0)
+  test "LDR_M":
+    check(1 == 0)
+  test "STR_I":
+    check(1 == 0)
+  test "STR_R":
+    check(1 == 0)
+  test "INV_R":
+    check(1 == 0)
+  test "AND_R":
+    check(1 == 0)
+  test "OR_R":
+    check(1 == 0)
+  test "OR_I":
+    check(1 == 0)
+  test "XOR_R":
+    check(1 == 0)
+  test "XOR_I":
+    check(1 == 0)
+  test "TEST_R":
+    check(1 == 0)
+  test "JMP_R":
+    check(1 == 0)
+  test "JMP_I":
+    check(1 == 0)
+  test "JEQ_R":
+    check(1 == 0)
+  test "JEQ_I":
+    check(1 == 0)
+  test "JNE_R":
+    check(1 == 0)
+  test "JNE_I":
+    check(1 == 0)
+  test "JLT_R":
+    check(1 == 0)
+  test "JLT_I":
+    check(1 == 0)
+  test "JGT_R":
+    check(1 == 0)
+  test "JGT_I":
+    check(1 == 0)
+  test "JLTE_R":
+    check(1 == 0)
+  test "JLTE_I":
+    check(1 == 0)
+  test "JGTE_R":
+    check(1 == 0)
+  test "JGTE_I":
+    check(1 == 0)
+
