@@ -21,9 +21,6 @@ type Token = enum ## Token enumerator of possible lex states
   ADDR,           ## Address Value
 
 
-let input = "ld r1 1234"
-
-
 proc lex_num(w: string): bool =
   try:
     discard w.parseUInt
@@ -42,15 +39,28 @@ proc lex_inner_num(w: string): bool =
   except ValueError:
     return false
 
+proc lex_reg(w: string): bool =
+  var tmp = ""
+  for c in w[1] .. w[w.high]:
+    tmp.add(c)
+  try:
+    let regnum = tmp.parseInt
+    if regnum < 32:
+      return true
+  except ValueError:
+    return false
+
 proc lex_word(w: string): Token =
   if w[0] == '[' and w[w.high] == ']':
     if lex_inner_num(w):
       return ADDR
     else:
       echo "Failed to lex inner number for word that looks like addr: ", w
-      # raise new ValueError
-  if lex_num(w):
+  elif lex_num(w):
     return IVAL
+  elif w[0] == 'r':
+    if lex_reg(w):
+      return REG
 
 
 proc lex_input(input: string): array[3, Token] =
@@ -58,8 +68,8 @@ proc lex_input(input: string): array[3, Token] =
   ## an array of 3 Tokens is used as the return becuase it can
   ## cover the possible cases
 
+  var indx = 0
   for word in input.split():
-    var indx = 0
     case word:
     of "ld":
       result[indx] = LD
@@ -69,12 +79,26 @@ proc lex_input(input: string): array[3, Token] =
       result[indx] = lex_word(word)
       echo "Unexpected word: ", word
     indx += 1
-  return
+    echo "Indx: ", indx, ", Word: ", word
+  return result
 
 
 
+
+#[
+  ASM
+
+
+  ld r0 1234 # Register+Immediate addressing?
+  ld 1234 # Immediate addressing?
+  ld [1234] # Direct (but only for load) addressing
+  str r0
+  and r0 r1 # Register addressing? (inx that look like `_R` )
+  and r0 1234
+]#
 
 
 
 when isMainModule:
-  discard lex_input(input)
+  let input = "ld r1 1234"
+  echo "Lexed Input: ", lex_input(input)

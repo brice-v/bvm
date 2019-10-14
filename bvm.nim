@@ -828,19 +828,3 @@ suite "Test running instructions":
     cpu.exec_inx(TEST_R, rs = 0, rd = 1)
     cpu.exec_inx(JGTE_I, imm_val = 4321)
     check(cpu.pc == 4321)
-
-
-
-
-
-#[
-  ASM
-
-
-  ld r0 1234 # Register+Immediate addressing?
-  ld 1234 # Immediate addressing?
-  ld [1234] # Direct (but only for load) addressing
-  str r0
-  and r0 r1 # Register addressing? (inx that look like `_R` )
-  and r0 1234
-]#
