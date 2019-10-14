@@ -79,7 +79,7 @@ proc lex_input(input: string): array[3, Token] =
       result[indx] = lex_word(word)
       echo "Unexpected word: ", word
     indx += 1
-    echo "Indx: ", indx, ", Word: ", word
+    # echo "Indx: ", indx, ", Word: ", word
   return result
 
 
@@ -101,4 +101,6 @@ proc lex_input(input: string): array[3, Token] =
 
 when isMainModule:
   let input = "ld r1 1234"
+  let oinput = "str [1234]"
   echo "Lexed Input: ", lex_input(input)
+  echo "Lexed OInput: ", lex_input(oinput)
