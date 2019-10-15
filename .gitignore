@@ -1,1 +1,4 @@
 *.exe
+test_asm
+test_bvm
+assembler

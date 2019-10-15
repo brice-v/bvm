@@ -12,7 +12,7 @@
 #   echo new_as()
 import strutils
 
-type Token = enum ## Token enumerator of possible lex states
+type Tok* = enum ## Token enumerator of possible lex states
   NOP,            ## NOP Instruction
   LD,             ## Load Instruction
   REG,            ## General Purpose Register
@@ -50,7 +50,7 @@ proc lex_reg(w: string): bool =
   except ValueError:
     return false
 
-proc lex_word(w: string): Token =
+proc lex_word(w: string): Tok =
   if w[0] == '[' and w[w.high] == ']':
     if lex_inner_num(w):
       return ADDR
@@ -63,7 +63,7 @@ proc lex_word(w: string): Token =
       return REG
 
 
-proc lex_input(input: string): array[3, Token] =
+proc lex_input*(input: string): array[3, Tok] =
   ## `lex_input` takes a string and converts it to tokens to be parsed
   ## an array of 3 Tokens is used as the return becuase it can
   ## cover the possible cases
@@ -77,7 +77,7 @@ proc lex_input(input: string): array[3, Token] =
       result[indx] = STR
     else:
       result[indx] = lex_word(word)
-      echo "Unexpected word: ", word
+      # echo "Unexpected word: ", word
     indx += 1
     # echo "Indx: ", indx, ", Word: ", word
   return result
@@ -96,7 +96,6 @@ proc lex_input(input: string): array[3, Token] =
   and r0 r1 # Register addressing? (inx that look like `_R` )
   and r0 1234
 ]#
-
 
 
 when isMainModule:
