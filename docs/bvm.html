@@ -833,15 +833,15 @@ function main() {
   JGT_I, JLTE_R, JLTE_I, JGTE_R, JGTE_I"><wbr />INX<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#CCR"
     title="CCR = object
-  zf: bool                     ## zero flag
-  ltf: bool                    ## less than flag
-  nf: bool                     ## negative flag"><wbr />CCR<span class="attachedType"></span></a></li>
+  zf*: bool                    ## zero flag
+  ltf*: bool                   ## less than flag
+  nf*: bool                    ## negative flag"><wbr />CCR<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#CPU"
     title="CPU = object
-  reg: array[0 .. NUM_REG, uint32] ## 32 general purpose registers
-  pc: uint32                   ## program counter
-  mem: array[0 .. MEM_SIZE, uint32] ## memory
-  ccr: CCR"><wbr />CPU<span class="attachedType"></span></a></li>
+  reg*: array[0 .. NUM_REG, uint32] ## 32 general purpose registers
+  pc*: uint32                  ## program counter
+  mem*: array[0 .. MEM_SIZE, uint32] ## memory
+  ccr*: CCR"><wbr />CPU<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -867,7 +867,7 @@ function main() {
   <li><a class="reference" href="#ldr_mem%2CCPU%2Cuint32%2Cuint32"
     title="ldr_mem(cpu: var CPU; reg_src, mem_addr: uint32)"><wbr />ldr_<wbr />mem<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#str_imm%2CCPU%2Cuint32%2Cuint32"
-    title="str_imm(cpu: var CPU; imm_val, mem_addr: uint32)"><wbr />str_<wbr />imm<span class="attachedType">CPU</span></a></li>
+    title="str_imm(cpu: var CPU; mem_addr, imm_val: uint32)"><wbr />str_<wbr />imm<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#str_reg%2CCPU%2Cuint32%2Cuint32"
     title="str_reg(cpu: var CPU; reg_src, mem_addr: uint32)"><wbr />str_<wbr />reg<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#add_reg%2CCPU%2Cuint32%2Cuint32"
@@ -922,6 +922,8 @@ function main() {
     title="jgte_reg(cpu: var CPU; reg_src: uint32)"><wbr />jgte_<wbr />reg<span class="attachedType">CPU</span></a></li>
   <li><a class="reference" href="#jgte_imm%2CCPU%2Cuint32"
     title="jgte_imm(cpu: var CPU; imm_val: uint32)"><wbr />jgte_<wbr />imm<span class="attachedType">CPU</span></a></li>
+  <li><a class="reference" href="#exec_inx%2CCPU%2CINX%2Cuint32%2Cuint32%2Cuint32"
+    title="exec_inx(cpu: var CPU; inx: INX; rs, rd, imm_val: uint32 = 0)"><wbr />exec_<wbr />inx<span class="attachedType">CPU</span></a></li>
 
   </ul>
 </li>
@@ -948,9 +950,9 @@ INX is the instruction opcode for now this opcode will be decided by an enum
 </dd>
 <a id="CCR"></a>
 <dt><pre><a href="bvm.html#CCR"><span class="Identifier">CCR</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">zf</span><span class="Other">:</span> <span class="Identifier">bool</span>                     <span class="Comment">## zero flag</span>
-  <span class="Identifier">ltf</span><span class="Other">:</span> <span class="Identifier">bool</span>                    <span class="Comment">## less than flag</span>
-  <span class="Identifier">nf</span><span class="Other">:</span> <span class="Identifier">bool</span>                     <span class="Comment">## negative flag</span>
+  <span class="Identifier">zf</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>                    <span class="Comment">## zero flag</span>
+  <span class="Identifier">ltf</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>                   <span class="Comment">## less than flag</span>
+  <span class="Identifier">nf</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">bool</span>                    <span class="Comment">## negative flag</span>
   </pre></dt>
 <dd>
 
@@ -959,10 +961,10 @@ CCR - the code condition register, made up of flags
 </dd>
 <a id="CPU"></a>
 <dt><pre><a href="bvm.html#CPU"><span class="Identifier">CPU</span></a> <span class="Other">=</span> <span class="Keyword">object</span>
-  <span class="Identifier">reg</span><span class="Other">:</span> <span class="Identifier">array</span><span class="Other">[</span><span class="DecNumber">0</span> <span class="Operator">..</span> <span class="Identifier">NUM_REG</span><span class="Other">,</span> <span class="Identifier">uint32</span><span class="Other">]</span> <span class="Comment">## 32 general purpose registers</span>
-  <span class="Identifier">pc</span><span class="Other">:</span> <span class="Identifier">uint32</span>                   <span class="Comment">## program counter</span>
-  <span class="Identifier">mem</span><span class="Other">:</span> <span class="Identifier">array</span><span class="Other">[</span><span class="DecNumber">0</span> <span class="Operator">..</span> <span class="Identifier">MEM_SIZE</span><span class="Other">,</span> <span class="Identifier">uint32</span><span class="Other">]</span> <span class="Comment">## memory</span>
-  <span class="Identifier">ccr</span><span class="Other">:</span> <a href="bvm.html#CCR"><span class="Identifier">CCR</span></a>
+  <span class="Identifier">reg</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">array</span><span class="Other">[</span><span class="DecNumber">0</span> <span class="Operator">..</span> <span class="Identifier">NUM_REG</span><span class="Other">,</span> <span class="Identifier">uint32</span><span class="Other">]</span> <span class="Comment">## 32 general purpose registers</span>
+  <span class="Identifier">pc</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">uint32</span>                  <span class="Comment">## program counter</span>
+  <span class="Identifier">mem</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">array</span><span class="Other">[</span><span class="DecNumber">0</span> <span class="Operator">..</span> <span class="Identifier">MEM_SIZE</span><span class="Other">,</span> <span class="Identifier">uint32</span><span class="Other">]</span> <span class="Comment">## memory</span>
+  <span class="Identifier">ccr</span><span class="Operator">*</span><span class="Other">:</span> <a href="bvm.html#CCR"><span class="Identifier">CCR</span></a>
 </pre></dt>
 <dd>
 
@@ -1022,7 +1024,7 @@ newCPU returns a fully initalized (zero'd) cpu
 
 </dd>
 <a id="str_imm,CPU,uint32,uint32"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#str_imm%2CCPU%2Cuint32%2Cuint32"><span class="Identifier">str_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">imm_val</span><span class="Other">,</span> <span class="Identifier">mem_addr</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#str_imm%2CCPU%2Cuint32%2Cuint32"><span class="Identifier">str_imm</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">mem_addr</span><span class="Other">,</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 <tt class="docutils literal"><span class="pre">str_imm</span></tt> takes the 32 bit immediate value and places it at the memory address
@@ -1221,6 +1223,13 @@ newCPU returns a fully initalized (zero'd) cpu
 <tt class="docutils literal"><span class="pre">jgte_imm</span></tt> jumps to the immediate 32 bit memory address if the less than flag is not set or the zero flag is set
 
 </dd>
+<a id="exec_inx,CPU,INX,uint32,uint32,uint32"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#exec_inx%2CCPU%2CINX%2Cuint32%2Cuint32%2Cuint32"><span class="Identifier">exec_inx</span></a><span class="Other">(</span><span class="Identifier">cpu</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="bvm.html#CPU"><span class="Identifier">CPU</span></a><span class="Other">;</span> <span class="Identifier">inx</span><span class="Other">:</span> <a href="bvm.html#INX"><span class="Identifier">INX</span></a><span class="Other">;</span> <span class="Identifier">rs</span><span class="Other">,</span> <span class="Identifier">rd</span><span class="Other">,</span> <span class="Identifier">imm_val</span><span class="Other">:</span> <span class="Identifier">uint32</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+<tt class="docutils literal"><span class="pre">exec_inx</span></tt> executes an instruction on the vm
+
+</dd>
 
 </dl></div>
 
@@ -1231,7 +1240,7 @@ newCPU returns a fully initalized (zero'd) cpu
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-10-13 08:03:43 UTC</small>
+        <small>Made with Nim. Generated: 2019-10-15 15:56:29 UTC</small>
       </div>
     </div>
   </div>
