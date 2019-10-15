@@ -226,8 +226,8 @@ suite "vmtest":
     check(vm.pc == 0x4321)
 
   echo "Finished VM tests..."
-  
-  
+
+
 suite "Test running instructions":
   echo "Starting instruction tests..."
   setup:
@@ -270,7 +270,8 @@ suite "Test running instructions":
     cpu.exec_inx(LDR_M, imm_val = 1234, rs = 0)
     check(cpu.reg[0] == 19)
   test "STR_I":
-    cpu.exec_inx(STR_I, rs = 4321, imm_val = 1234) # imm_val is mem_addr, rs is the imm_val
+    # imm_val is mem_addr, rs is the imm_val
+    cpu.exec_inx(STR_I, rs = 4321, imm_val = 1234)
     check(cpu.mem[4321] == 1234)
   test "STR_R":
     cpu.reg[0] = 1234

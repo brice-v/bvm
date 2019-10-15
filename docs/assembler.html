@@ -833,7 +833,20 @@ function main() {
   REG,                        ## General Purpose Register
   IVAL,                       ## Immediate Value
   STR,                        ## Store instruction
-  ADDR                        ## Address Value"><wbr />Tok<span class="attachedType"></span></a></li>
+  ADDR,                       ## Address Value
+  AND,                        ## And Instruction
+  OR,                         ## Or Instruction
+  XOR,                        ## Xor Instruction
+  SUB,                        ## Subtraction Instruction
+  INV,                        ## Invert Instruction
+  TEST,                       ## Test Instruction
+  JMP,                        ## Jump Always Instruction
+  JEQ,                        ## Jump Equal Instruction
+  JNE,                        ## Jump Not Equal Instruction
+  JLT,                        ## Jump Less Than Instruction
+  JGT,                        ## Jump Greater Than Instruction
+  JLTE,                       ## Jump Less Than or Equal Instruction
+  JGTE                        ## Jump Greater Than or Equal Instruction"><wbr />Tok<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -863,7 +876,20 @@ function main() {
   <span class="Identifier">REG</span><span class="Other">,</span>                        <span class="Comment">## General Purpose Register</span>
   <span class="Identifier">IVAL</span><span class="Other">,</span>                       <span class="Comment">## Immediate Value</span>
   <span class="Identifier">STR</span><span class="Other">,</span>                        <span class="Comment">## Store instruction</span>
-  <span class="Identifier">ADDR</span>                        <span class="Comment">## Address Value</span></pre></dt>
+  <span class="Identifier">ADDR</span><span class="Other">,</span>                       <span class="Comment">## Address Value</span>
+  <span class="Identifier">AND</span><span class="Other">,</span>                        <span class="Comment">## And Instruction</span>
+  <span class="Identifier">OR</span><span class="Other">,</span>                         <span class="Comment">## Or Instruction</span>
+  <span class="Identifier">XOR</span><span class="Other">,</span>                        <span class="Comment">## Xor Instruction</span>
+  <span class="Identifier">SUB</span><span class="Other">,</span>                        <span class="Comment">## Subtraction Instruction</span>
+  <span class="Identifier">INV</span><span class="Other">,</span>                        <span class="Comment">## Invert Instruction</span>
+  <span class="Identifier">TEST</span><span class="Other">,</span>                       <span class="Comment">## Test Instruction</span>
+  <span class="Identifier">JMP</span><span class="Other">,</span>                        <span class="Comment">## Jump Always Instruction</span>
+  <span class="Identifier">JEQ</span><span class="Other">,</span>                        <span class="Comment">## Jump Equal Instruction</span>
+  <span class="Identifier">JNE</span><span class="Other">,</span>                        <span class="Comment">## Jump Not Equal Instruction</span>
+  <span class="Identifier">JLT</span><span class="Other">,</span>                        <span class="Comment">## Jump Less Than Instruction</span>
+  <span class="Identifier">JGT</span><span class="Other">,</span>                        <span class="Comment">## Jump Greater Than Instruction</span>
+  <span class="Identifier">JLTE</span><span class="Other">,</span>                       <span class="Comment">## Jump Less Than or Equal Instruction</span>
+  <span class="Identifier">JGTE</span>                        <span class="Comment">## Jump Greater Than or Equal Instruction</span></pre></dt>
 <dd>
 
 Token enumerator of possible lex states
@@ -891,7 +917,7 @@ Token enumerator of possible lex states
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2019-10-15 15:57:01 UTC</small>
+        <small>Made with Nim. Generated: 2019-10-15 20:27:59 UTC</small>
       </div>
     </div>
   </div>

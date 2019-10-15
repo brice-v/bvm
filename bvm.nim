@@ -385,7 +385,8 @@ proc main() =
   echo "[bvm] - IN MAIN"
   var bvm = newCPU()
   echo "[bvm] Iniatialized new CPU..."
-  echo "[bvm] mem: ", fmt"[{MEM_SIZE}: uint32] | {int((MEM_SIZE * 32)/1024)}K bytes"
+  echo "[bvm] mem: ", fmt"[{MEM_SIZE}: uint32] ",
+    "| {int((MEM_SIZE * 32)/1024)}K bytes"
   bvm.exec_inx(NOP)
 
 # Just for running this file/main

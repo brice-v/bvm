@@ -13,12 +13,25 @@
 import strutils
 
 type Tok* = enum ## Token enumerator of possible lex states
-  NOP,            ## NOP Instruction
-  LD,             ## Load Instruction
-  REG,            ## General Purpose Register
-  IVAL,           ## Immediate Value
-  STR,            ## Store instruction
-  ADDR,           ## Address Value
+  NOP,           ## NOP Instruction
+  LD,            ## Load Instruction
+  REG,           ## General Purpose Register
+  IVAL,          ## Immediate Value
+  STR,           ## Store instruction
+  ADDR,          ## Address Value
+  AND,           ## And Instruction
+  OR,            ## Or Instruction
+  XOR,           ## Xor Instruction
+  SUB,           ## Subtraction Instruction
+  INV,           ## Invert Instruction
+  TEST,          ## Test Instruction
+  JMP,           ## Jump Always Instruction
+  JEQ,           ## Jump Equal Instruction
+  JNE,           ## Jump Not Equal Instruction
+  JLT,           ## Jump Less Than Instruction
+  JGT,           ## Jump Greater Than Instruction
+  JLTE,          ## Jump Less Than or Equal Instruction
+  JGTE,          ## Jump Greater Than or Equal Instruction
 
 
 proc lex_num(w: string): bool =
@@ -69,12 +82,38 @@ proc lex_input*(input: string): array[3, Tok] =
   ## cover the possible cases
 
   var indx = 0
-  for word in input.split():
+  for word in input.toLower().split():
     case word:
     of "ld":
       result[indx] = LD
     of "str":
       result[indx] = STR
+    of "and":
+      result[indx] = AND
+    of "or":
+      result[indx] = OR
+    of "xor":
+      result[indx] = XOR
+    of "sub":
+      result[indx] = SUB
+    of "inv":
+      result[indx] = INV
+    of "test":
+      result[indx] = TEST
+    of "jmp":
+      result[indx] = JMP
+    of "jeq":
+      result[indx] = JEQ
+    of "jne":
+      result[indx] = JNE
+    of "jlt":
+      result[indx] = JLT
+    of "jgt":
+      result[indx] = JGT
+    of "jlte":
+      result[indx] = JLTE
+    of "jgte":
+      result[indx] = JGTE
     else:
       result[indx] = lex_word(word)
       # echo "Unexpected word: ", word
