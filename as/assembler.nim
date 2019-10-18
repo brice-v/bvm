@@ -122,6 +122,26 @@ proc lex_input*(input: string): array[3, Tok] =
   return result
 
 
+proc parse_lexed_input*(input: array[3, Tok]) =
+  ## `parse_lexed_input` takes the 3 ops returned from the
+  ## lexer and turns it into the applicable bytecode for
+  ## the vm to run.
+  ##
+  ## The common cases of the last 2 operands seem to be
+  ## Notes: IVAL is 32 bits (this may be lowered to fit
+  ##        the instruction into a single 32 bit value)
+  ##        ADDR is 32 bits (same note as above)
+  ##        REG takes up 5 bits (32 gp registers)
+  ##        INX has 15 instructions to handle plus 3? bits
+  ##        to cover the cases below
+  ## INX - REG IVAL
+  ## INX - REG ADDR
+  ## INX - REG REG
+  ## INX - REG NOP -> this just means that we dont care
+  ##                  about the last operand
+  ## INX - IVAL NOP
+  let inx = input[0]
+  echo inx
 
 
 #[
@@ -138,7 +158,12 @@ proc lex_input*(input: string): array[3, Tok] =
 
 
 when isMainModule:
-  let input = "ld r1 1234"
-  let oinput = "str [1234]"
-  echo "Lexed Input: ", lex_input(input)
-  echo "Lexed OInput: ", lex_input(oinput)
+  let
+    input = "ld r1 1234"
+    oinput = "str [1234]"
+    linput = lex_input(input)
+    loinput = lex_input(oinput)
+  echo "Lexed Input: ", linput
+  echo "Lexed OInput: ", loinput
+  parse_lexed_input(linput)
+
